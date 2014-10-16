@@ -130,9 +130,9 @@
     self.cellWidth = self.frame.size.width/self.visibleItems;
     self.backgroundColor = self.cellBackgroundColor;
     
-    NSInteger viewWidth = self.frame.size.width;
-    CGFloat f = (viewWidth-self.cellWidth)/2;
-    [self.tableView setContentInset: UIEdgeInsetsMake(f, 0, f, 0)];
+//    NSInteger viewWidth = self.frame.size.width;
+//    CGFloat f = (viewWidth-self.cellWidth)/2;
+//    [self.tableView setContentInset: UIEdgeInsetsMake(f, 0, f, 0)];
     self.clipsToBounds = YES;
     
     [self.tableView reloadData];
@@ -146,7 +146,13 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.cellWidth;
+//  return self.cellWidth;
+  NSString *text = [self.values objectAtIndex:indexPath.row];
+  int width = [text sizeWithAttributes:@{NSFontAttributeName:self.textFont}].width;
+  if (width < 80) {
+    return 80;
+  }
+  return width + 10;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -172,8 +178,12 @@
     bgColorView.backgroundColor = self.cellSelectedColor;
     bgColorView.layer.masksToBounds = YES;
     [cell setSelectedBackgroundView:bgColorView];
-    
+
     cell.textLabel.text = [self.values objectAtIndex:indexPath.row];
+  
+    // ラベルの文字サイズ自動調整の設定
+    cell.textLabel.minimumScaleFactor = 10.f/16.f;
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
     return cell;
 }
@@ -188,20 +198,20 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if(!self.isTouchAnimation)
     {
-        CGPoint point = [self convertPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0) toView:self.tableView];
-        NSIndexPath* centerIndexPath = [self.tableView indexPathForRowAtPoint:point];
-        [self.tableView selectRowAtIndexPath:centerIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        CGPoint point = [self convertPoint:CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0) toView:self.tableView];
+//        NSIndexPath* centerIndexPath = [self.tableView indexPathForRowAtPoint:point];
+//        [self.tableView selectRowAtIndexPath:centerIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (decelerate == NO) {
-        [self centerTable];
+//        [self centerTable];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self centerTable];
+//    [self centerTable];
 }
 
 - (void)centerTable {
@@ -216,9 +226,9 @@
 
 - (void) setCurrentIndex:(NSIndexPath *)indexPath animated:(BOOL)animated {
     if(self.isTouchAnimation || _selectedIndex != indexPath.row) {
-        
-        [self.tableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:UITableViewScrollPositionTop];
-        
+
+      [self.tableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:UITableViewScrollPositionMiddle];
+      
         if(_selectedIndex != indexPath.row) {
             _selectedIndex = indexPath.row;
             
