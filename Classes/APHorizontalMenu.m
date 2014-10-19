@@ -136,10 +136,11 @@
     self.clipsToBounds = YES;
     
     [self.tableView reloadData];
-    if(self.values.count > self.selectedIndex)
-    {
-        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
-    }
+//    if(self.values.count > self.selectedIndex)
+//    {
+//        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
+//    }
+  [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]  animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
 #pragma mark - UITableView control
@@ -149,10 +150,10 @@
 //  return self.cellWidth;
   NSString *text = [self.values objectAtIndex:indexPath.row];
   int width = [text sizeWithAttributes:@{NSFontAttributeName:self.textFont}].width;
-  if (width < 80) {
+  if (width < 50) {
     return 80;
   }
-  return width + 10;
+  return width + 50;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -182,7 +183,7 @@
     cell.textLabel.text = [self.values objectAtIndex:indexPath.row];
   
     // ラベルの文字サイズ自動調整の設定
-    cell.textLabel.minimumScaleFactor = 10.f/16.f;
+    cell.textLabel.minimumScaleFactor = 14.f/16.f;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
     return cell;
